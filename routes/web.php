@@ -8,6 +8,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\MembresiaController;
 use App\Http\Controllers\ModalidadController;
+use App\Http\Controllers\Personas\PersonaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SocioController;
 use App\Models\Asistencia;
@@ -62,6 +63,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/asistencias/edit/{id}', [AsistenciaController::class, 'edit'])->name('asistencias.edit');
     Route::put('/asistencias/{id}', [AsistenciaController::class, 'update'])->name('asistencias.update');
     Route::delete('/asistencias/{id}', [AsistenciaController::class, 'destroy'])->name('asistencias.destroy');
+
+    //personas
+    Route::get('/personas', [PersonaController::class, 'index'])->name('personas.index');
+    Route::get('/personas/create', [PersonaController::class, 'create'])->name('personas.create');
+    Route::post('/personas/create', [PersonaController::class, 'store'])->name('personas.store');
+    Route::get('/personas/edit/{id}', [PersonaController::class, 'edit'])->name('personas.edit');
+    Route::put('/personas/{id}', [PersonaController::class,'update'])->name('personas.update');
+    Route::delete('/personas/destroy/{id}', [PersonaController::class, 'destroy'])->name('personas.destroy');
+
+
 });
 
 // Rutas de autenticación

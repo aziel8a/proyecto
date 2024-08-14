@@ -114,6 +114,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('asistencias.index') }}">Asistencia</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('personas.index') }}">PERSONAS</a>
+                    </li>
                 </ul>
 
                 <ul class="navbar-nav ms-auto">

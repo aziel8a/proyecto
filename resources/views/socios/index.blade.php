@@ -16,11 +16,21 @@
 <div class="container mt-5">
     <center><h1>Socios</h1></center>
     <a href="{{ route('socios.create') }}" class="mb-3 btn btn-secondary">Dar de alta a un socio</a>
+    <a href="{{ route('pdf.stream') }}" class="mb-3 btn btn-secondary">Ver Reporte PDF</a>
+    <a href="{{ route('pdf.download') }}" class="mb-3 btn btn-secondary">Descargar Reporte PDF</a>
+    <a href="{{ route('pdf.mail') }}" class="mb-3 btn btn-secondary">Enviar reporte </a>
+
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <table class="table table-striped table-hover">
         <thead class="table-secondary">
             <tr>

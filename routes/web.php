@@ -6,6 +6,9 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DomPdfController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\MembresiaController;
 use App\Http\Controllers\ModalidadController;
 use App\Http\Controllers\Personas\PersonaController;
@@ -15,6 +18,7 @@ use App\Models\Asistencia;
 use App\Models\Membresia;
 use App\Models\Socio;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 // Página de inicio
 Route::get('/', function () {
@@ -64,16 +68,40 @@ Route::middleware('auth')->group(function () {
     Route::put('/asistencias/{id}', [AsistenciaController::class, 'update'])->name('asistencias.update');
     Route::delete('/asistencias/{id}', [AsistenciaController::class, 'destroy'])->name('asistencias.destroy');
 
+
     //personas
     Route::get('/personas', [PersonaController::class, 'index'])->name('personas.index');
     Route::get('/personas/create', [PersonaController::class, 'create'])->name('personas.create');
     Route::post('/personas/create', [PersonaController::class, 'store'])->name('personas.store');
     Route::get('/personas/edit/{id}', [PersonaController::class, 'edit'])->name('personas.edit');
-    Route::put('/personas/{id}', [PersonaController::class,'update'])->name('personas.update');
+    Route::put('/personas/{id}', [PersonaController::class, 'update'])->name('personas.update');
     Route::delete('/personas/destroy/{id}', [PersonaController::class, 'destroy'])->name('personas.destroy');
 
 
+
+    //FILE STORAGE
+    Route::get('/files', [FileController::class, 'loadView'])->name('files.load');
+    Route::post('/files', [FileController::class, 'storeFile'])->name('files.store');
+
+    //DOMPDF + MAIL + SIGNED ROUTES + STORAGE
+    /*Route::get('/pdf', function () {
+    $data = ['nombre' => 'Diego'];
+    $pdf = PDF::loadView('invoice', $data);
+    return $pdf->stream('invoice.pdf');
+    });*/
+    Route::get('/pdf/stream', [DomPdfController::class, 'stream'])->name('pdf.stream');
+    Route::get('/pdf/download', [DomPdfController::class, 'download'])->name('pdf.download');
+    Route::get('/pdf/mail', [DomPdfController::class, 'sendPdf'])->name('pdf.mail');
 });
+
+
+//SIGNED ROUTES + MAIL
+Route::get('/invoices/{filename}', [DomPdfController::class, 'viewInvoice'])->name('invoice.view')->middleware('signed');
+Route::get('/send', [MailController::class, 'send'])->name('mails.send');
+Route::get('/signed', [MailController::class, 'checkUrl'])->name('mails.signed')->middleware('signed');
+
+
+
 
 // Rutas de autenticación
 require __DIR__ . '/auth.php';
